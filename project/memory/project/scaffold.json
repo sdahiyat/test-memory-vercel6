@@ -45,36 +45,6 @@
       "path": ".env.example",
       "purpose": "Environment variables template for Supabase, OpenAI, and auth",
       "isEmpty": false
-    },
-    {
-      "path": "pr-docs/.gitkeep",
-      "purpose": "Placeholder to maintain directory structure",
-      "isEmpty": false
-    },
-    {
-      "path": "memory/.gitkeep",
-      "purpose": "Placeholder to maintain directory structure",
-      "isEmpty": false
-    },
-    {
-      "path": "memory/project/.gitkeep",
-      "purpose": "Placeholder to maintain directory structure",
-      "isEmpty": false
-    },
-    {
-      "path": "memory/task/.gitkeep",
-      "purpose": "Placeholder to maintain directory structure",
-      "isEmpty": false
-    },
-    {
-      "path": "memory/agent/.gitkeep",
-      "purpose": "Placeholder to maintain directory structure",
-      "isEmpty": false
-    },
-    {
-      "path": "memory/context/.gitkeep",
-      "purpose": "Placeholder to maintain directory structure",
-      "isEmpty": false
     }
   ],
   "libraryExports": [],

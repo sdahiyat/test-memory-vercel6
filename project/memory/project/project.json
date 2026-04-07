@@ -1,33 +1,38 @@
 {
   "schemaVersion": "cofabric.memory.project.v1",
   "name": "NutriTrack",
-  "oneLineDescription": "AI-powered nutrition tracking application designed to help users easily log meals, understand their dietary habits, and improve overall health",
+  "oneLineDescription": "An AI-powered nutrition tracking application designed to help users easily log meals, understand their dietary habits, and improve overall health.",
   "whatItIs": "NutriTrack is an AI-powered nutrition tracking application designed to help users easily log meals, understand their dietary habits, and improve overall health. The product focuses on speed, simplicity, and intelligent automation to reduce the friction typically associated with food tracking.",
   "stack": [
     {
       "name": "next",
-      "version": "^14.0.0",
+      "version": "14.2.5",
       "purpose": "React framework"
     },
     {
       "name": "react",
-      "version": "^18.0.0",
+      "version": "^18",
       "purpose": "UI library"
     },
     {
       "name": "react-dom",
-      "version": "^18.0.0",
-      "purpose": "React DOM renderer"
+      "version": "^18",
+      "purpose": "React DOM rendering"
     },
     {
       "name": "@supabase/supabase-js",
-      "version": "^2.38.0",
-      "purpose": "Database and auth client"
+      "version": "^2.39.0",
+      "purpose": "Supabase client"
     },
     {
       "name": "openai",
-      "version": "^4.20.0",
-      "purpose": "AI integration"
+      "version": "^4.28.0",
+      "purpose": "OpenAI API integration"
+    },
+    {
+      "name": "tailwindcss",
+      "version": "^3.4.1",
+      "purpose": "CSS framework"
     }
   ],
   "externalIntegrations": [
@@ -44,14 +49,6 @@
       "service": "OpenAI",
       "envVars": [
         "OPENAI_API_KEY"
-      ],
-      "clientLocation": null
-    },
-    {
-      "service": "NextAuth",
-      "envVars": [
-        "NEXTAUTH_URL",
-        "NEXTAUTH_SECRET"
       ],
       "clientLocation": null
     }

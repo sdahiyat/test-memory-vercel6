@@ -2,77 +2,93 @@
   "schemaVersion": "cofabric.memory.roadmap.v1",
   "featuresNotYetImplemented": [
     {
-      "name": "User Authentication",
-      "description": "User signs up and logs in to access the application.",
+      "name": "User authentication",
+      "description": "User signs up / logs in",
       "needs": [
-        "pages",
-        "API routes",
+        "auth pages",
         "Supabase Auth integration"
       ]
     },
     {
-      "name": "Manual Meal Logging",
-      "description": "Manual food entry with portion size selection and recent/frequent foods for quick entry.",
+      "name": "Goal setting",
+      "description": "Sets basic goals (weight, target calories)",
       "needs": [
-        "pages",
-        "API routes",
-        "DB tables",
-        "UI forms"
+        "profile setup page",
+        "database schema",
+        "API routes"
       ]
     },
     {
-      "name": "AI Photo Logging",
-      "description": "Capture or upload food images with automatic food identification and calorie estimation.",
+      "name": "Daily dashboard",
+      "description": "Lands on daily dashboard with calorie + macro summary",
       "needs": [
-        "pages",
+        "dashboard page",
         "API routes",
+        "data aggregation"
+      ]
+    },
+    {
+      "name": "Manual meal logging",
+      "description": "Manual food entry with portion size selection",
+      "needs": [
+        "meal logging interface",
+        "database schema",
+        "API routes"
+      ]
+    },
+    {
+      "name": "AI photo logging",
+      "description": "Capture or upload food images with automatic food identification and calorie estimation",
+      "needs": [
+        "camera interface",
         "OpenAI integration",
-        "image upload"
+        "image processing",
+        "API routes"
       ]
     },
     {
-      "name": "Daily Dashboard",
-      "description": "Daily calorie and macro summary with updated nutrition information.",
+      "name": "Nutrition tracking",
+      "description": "Daily calorie tracking and macronutrient breakdown",
       "needs": [
-        "pages",
-        "API routes",
-        "data visualization"
+        "tracking logic",
+        "database queries",
+        "calculation functions"
       ]
     },
     {
-      "name": "Goal Setting",
-      "description": "Sets basic goals including weight and target calories.",
+      "name": "Progress charts",
+      "description": "Progress charts for weight, calories, macros",
       "needs": [
-        "pages",
-        "API routes",
-        "DB tables"
+        "charts component",
+        "historical data queries",
+        "visualization logic"
       ]
     },
     {
-      "name": "Progress Tracking",
-      "description": "Progress charts showing weight, calories, and macros over time.",
+      "name": "Daily summaries",
+      "description": "Daily/weekly nutrition insights and suggestions for improvement",
       "needs": [
-        "pages",
-        "API routes",
-        "data visualization"
+        "insight generation",
+        "data analysis",
+        "AI integration"
       ]
     },
     {
-      "name": "User Profile Management",
-      "description": "Profile management for goals and personal data.",
+      "name": "User profile management",
+      "description": "Profile screen with goals and personal data",
       "needs": [
-        "pages",
-        "API routes",
-        "DB tables"
+        "profile pages",
+        "settings interface",
+        "API routes"
       ]
     },
     {
-      "name": "Nutrition Insights",
-      "description": "Daily and weekly nutrition insights with suggestions for improvement.",
+      "name": "Recent/frequent foods",
+      "description": "Recent/frequent foods for quick entry",
       "needs": [
-        "pages",
-        "API routes",
-        "analytics logic"
+        "food history tracking",
+        "quick selection interface",
+        "database queries"
       ]
     }
   ],
@@ -83,12 +99,12 @@
         {
           "name": "weight",
           "type": "decimal",
-          "notes": "User's current weight for goal tracking"
+          "notes": "user weight for goal setting"
         },
         {
           "name": "target_calories",
           "type": "integer",
-          "notes": "Daily calorie goal"
+          "notes": "daily calorie goal"
         }
       ],
       "schemaDetailsInSpec": false
@@ -97,24 +113,29 @@
       "name": "meals",
       "columnsSpecifiedInSpec": [
         {
+          "name": "user_id",
+          "type": "uuid",
+          "notes": "foreign key to users"
+        },
+        {
           "name": "calories",
           "type": "integer",
-          "notes": "Total calories for the meal"
+          "notes": "meal calorie content"
         },
         {
           "name": "protein",
           "type": "decimal",
-          "notes": "Protein content in grams"
+          "notes": "protein macronutrient in grams"
         },
         {
           "name": "carbs",
           "type": "decimal",
-          "notes": "Carbohydrate content in grams"
+          "notes": "carbohydrate macronutrient in grams"
         },
         {
           "name": "fats",
           "type": "decimal",
-          "notes": "Fat content in grams"
+          "notes": "fat macronutrient in grams"
         }
       ],
       "schemaDetailsInSpec": false
@@ -123,29 +144,29 @@
       "name": "foods",
       "columnsSpecifiedInSpec": [
         {
-          "name": "portion_size",
+          "name": "name",
           "type": "text",
-          "notes": "Selectable portion sizes for foods"
+          "notes": "food name for manual entry"
         },
         {
-          "name": "calories",
+          "name": "calories_per_serving",
           "type": "integer",
-          "notes": "Calories per portion"
+          "notes": "calorie content per serving"
         },
         {
-          "name": "protein",
+          "name": "protein_per_serving",
           "type": "decimal",
-          "notes": "Protein content per portion"
+          "notes": "protein content per serving"
         },
         {
-          "name": "carbs",
+          "name": "carbs_per_serving",
           "type": "decimal",
-          "notes": "Carbohydrate content per portion"
+          "notes": "carbohydrate content per serving"
         },
         {
-          "name": "fats",
+          "name": "fats_per_serving",
           "type": "decimal",
-          "notes": "Fat content per portion"
+          "notes": "fat content per serving"
         }
       ],
       "schemaDetailsInSpec": false
@@ -154,78 +175,72 @@
   "apiEndpointsToBuild": [
     {
       "method": "POST",
-      "path": "/api/auth/signup",
-      "description": "Create a new user account",
-      "authRequired": false
-    },
-    {
-      "method": "POST",
-      "path": "/api/auth/login",
-      "description": "Authenticate user login",
-      "authRequired": false
-    },
-    {
-      "method": "POST",
       "path": "/api/meals",
-      "description": "Log a new meal with food items and nutrition data",
+      "description": "Log a new meal with nutrition data",
       "authRequired": true
     },
     {
       "method": "GET",
       "path": "/api/meals",
-      "description": "Retrieve user's logged meals",
+      "description": "Retrieve user's meal history",
       "authRequired": true
     },
     {
       "method": "POST",
-      "path": "/api/meals/photo",
-      "description": "Upload food image and get AI-powered food identification and nutrition estimation",
+      "path": "/api/photos/analyze",
+      "description": "Analyze food photo for automatic identification and nutrition estimation",
       "authRequired": true
     },
     {
       "method": "GET",
       "path": "/api/nutrition/daily",
-      "description": "Get daily nutrition summary including calories and macros",
+      "description": "Get daily nutrition summary with calories and macros",
       "authRequired": true
     },
     {
       "method": "POST",
-      "path": "/api/goals",
-      "description": "Set user's nutrition and weight goals",
+      "path": "/api/users/goals",
+      "description": "Set user goals for weight and target calories",
       "authRequired": true
     },
     {
       "method": "GET",
-      "path": "/api/goals",
+      "path": "/api/users/goals",
       "description": "Retrieve user's current goals",
       "authRequired": true
     },
     {
       "method": "GET",
-      "path": "/api/progress",
-      "description": "Get progress charts data for weight, calories, and macros",
-      "authRequired": true
-    },
-    {
-      "method": "GET",
-      "path": "/api/insights",
-      "description": "Get personalized nutrition insights and suggestions",
+      "path": "/api/foods/search",
+      "description": "Search food database for manual entry",
       "authRequired": true
     },
     {
       "method": "GET",
       "path": "/api/foods/recent",
-      "description": "Get user's recent and frequent foods for quick entry",
+      "description": "Get user's recent/frequent foods for quick entry",
+      "authRequired": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/progress",
+      "description": "Retrieve progress data for charts and history",
+      "authRequired": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/insights",
+      "description": "Generate daily/weekly nutrition insights and suggestions",
       "authRequired": true
     }
   ],
   "openQuestions": [
-    "What specific goal types should be supported beyond weight and target calories?",
-    "How should the food database be populated - third-party API integration or manual curation?",
-    "What micronutrients should be tracked in the future implementation?",
+    "What specific micronutrients should be tracked in the optional micronutrient feature?",
     "How should portion sizes be standardized and measured?",
-    "What timeframes should progress charts cover (weekly, monthly, yearly)?",
-    "How frequently should nutrition insights be generated and updated?",
-    "What constitutes 'recent' and 'frequent' foods for quick entry suggestions?"
+    "What constitutes 'limited AI usage' in the free tier?",
+    "How should the food database be populated and maintained?",
+    "What specific goal types beyond weight loss, maintenance, and muscle gain should be supported?",
+    "How should progress be measured and what metrics should be tracked over time?",
+    "What triggers should be used for habit detection in insights?"
   ]
 }
